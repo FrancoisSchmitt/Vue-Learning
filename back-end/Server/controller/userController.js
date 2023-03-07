@@ -33,3 +33,9 @@ exports.findUsers = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+exports.findUserByID = (req, res, next) => {
+    Userdb.findOne({ _id: req.params.id })
+        .then(userId => res.status(200).json(userId))
+        .catch(error => res.status(404).json({ error }));
+}
+
