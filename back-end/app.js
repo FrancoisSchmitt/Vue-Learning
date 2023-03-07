@@ -36,8 +36,8 @@ app.use(morgan("tiny"));
 connectDB();
 
 // parse request to body-parser
-app.use(bodyparser.urlencoded({ extended: true }));
 
+app.use(express.json());
 // load routers
 app.use("/", require("./server/routes/router"));
 

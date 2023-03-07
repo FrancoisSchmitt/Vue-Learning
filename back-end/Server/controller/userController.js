@@ -25,3 +25,11 @@ exports.userCreate = (req, res) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+
+exports.findUsers = (req, res, next) => {
+    Userdb.find()
+        .then(AllUsers => res.status(200).json(AllUsers))
+        .catch(error => res.status(400).json({ error }));
+}
+
