@@ -1,10 +1,14 @@
 const express = require("express");
-// const mongoose = require('mongoose');
-const app = express();
-const morgan = require("morgan");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
+const bodyparser = require("body-parser");
 const cors = require("cors");
 const connectDB = require("./server/database/connection");
+const app = express();
+
+// Config .env
+dotenv.config({ path: "config.env" });
+const PORT = process.env.PORT || 8080;
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,18 +28,19 @@ app.use(
     origin: "*",
   })
 );
-dotenv.config({ path: "config.env" });
 
-// Log request
+// log requests
 app.use(morgan("tiny"));
 
-// MongoDB connect
+// mongodb connection
 connectDB();
 
-app.use(express.json());
+// parse request to body-parser
+app.use(bodyparser.urlencoded({ extended: true }));
 
-// app.use('/api/auth', userRoutes)
-// app.use('', squadRoutes)
-// app.use('', tournamentRoutes)
+// load routers
+app.use("/", require("./server/routes/router"));
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
